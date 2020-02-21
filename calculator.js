@@ -39,8 +39,18 @@ const operate = (operator, a, b) => {
   if (operator === "/") return divide(a, b);
 };
 
-// resolve function
-const resolve = () => {};
+// check result for infinity
+const checkForInfinity = () => {
+  let result = roundResult();
+  if (result == "Infinity" || result == "-Infinity" || result == "NaN") {
+    display.innerHTML = "Don't do that...";
+    setTimeout(() => {
+      display.innerHTML = "";
+    }, 1000);
+  } else {
+    display.innerHTML = result;
+  }
+};
 
 // back function
 const backspace = () => {
@@ -91,19 +101,19 @@ operatorBtns.forEach(btn => {
     ) {
       operators.pop();
       backspace();
-    }
-    if (operators.length === 0) {
+      operators.push(e.target.innerHTML);
+      display.innerHTML += e.target.innerHTML;
+    } else if (operators.length === 0) {
       operators.push(e.target.innerHTML);
       let firstNum = parseFloat(display.innerHTML);
       numbers.push(firstNum);
       display.innerHTML += e.target.innerHTML;
     } else {
       let secNum = parseFloat(
-        display.innerHTML.slice(display.innerHTML.indexOf(operators[0]) + 1)
+        display.innerHTML.slice(display.innerHTML.lastIndexOf(operators[0]) + 1)
       );
       numbers.push(secNum);
-      let result = roundResult();
-      display.innerHTML = result;
+      checkForInfinity();
       let firstNum = parseFloat(display.innerHTML);
       clearData();
       numbers.push(firstNum);
@@ -139,22 +149,22 @@ equalsBtn.addEventListener("click", () => {
   )
     return;
   let secNum = parseFloat(
-    display.innerHTML.slice(display.innerHTML.indexOf(operators[0]) + 1)
+    display.innerHTML.slice(display.innerHTML.lastIndexOf(operators[0]) + 1)
   );
   numbers.push(secNum);
-  let result = roundResult();
-  display.innerHTML = result;
+  logs();
+
+  checkForInfinity();
   clearData();
-  // logs();
+  logs();
 });
 
 // swap button
 swapBtn.addEventListener("click", e => {
   if (operators.length == 0) {
     let numberToSwap = parseFloat(display.innerHTML);
-    console.log(numberToSwap);
     display.innerHTML = -numberToSwap;
-  } else {
+    logs();
   }
 });
 
