@@ -29,6 +29,7 @@ const logs = () => {
   console.log(numbers);
   console.log(operators);
   console.log(display.innerHTML);
+  console.log(wipe);
 };
 
 // operate function
@@ -39,9 +40,9 @@ const operate = (operator, a, b) => {
   if (operator === "/") return divide(a, b);
 };
 
-// check result for infinity
-const checkForInfinity = () => {
-  let result = roundResult();
+// display result
+const displayResult = () => {
+  result = roundResult();
   if (result == "Infinity" || result == "-Infinity" || result == "NaN") {
     display.innerHTML = "Don't do that...";
     setTimeout(() => {
@@ -67,6 +68,13 @@ const clearData = () => {
   numbers = [];
   operators = [];
 };
+const wipeData = () => {
+  if (wipe) {
+    clearDisplay();
+    clearData();
+    wipe = false;
+  }
+};
 
 // round number
 const roundResult = () => {
@@ -77,10 +85,12 @@ const roundResult = () => {
 
 let numbers = [];
 let operators = [];
+let wipe = false;
 
 // printing buttons
 printBtns.forEach(btn => {
   btn.addEventListener("click", e => {
+    wipeData();
     if (e.target.classList.contains("decimal")) {
       if (display.innerHTML.slice(-1) == ".") return;
     }
@@ -104,6 +114,7 @@ operatorBtns.forEach(btn => {
       operators.push(e.target.innerHTML);
       display.innerHTML += e.target.innerHTML;
     } else if (operators.length === 0) {
+      wipe = false;
       operators.push(e.target.innerHTML);
       let firstNum = parseFloat(display.innerHTML);
       numbers.push(firstNum);
@@ -113,7 +124,7 @@ operatorBtns.forEach(btn => {
         display.innerHTML.slice(display.innerHTML.lastIndexOf(operators[0]) + 1)
       );
       numbers.push(secNum);
-      checkForInfinity();
+      displayResult();
       let firstNum = parseFloat(display.innerHTML);
       clearData();
       numbers.push(firstNum);
@@ -152,9 +163,8 @@ equalsBtn.addEventListener("click", () => {
     display.innerHTML.slice(display.innerHTML.lastIndexOf(operators[0]) + 1)
   );
   numbers.push(secNum);
-  logs();
-
-  checkForInfinity();
+  displayResult();
+  wipe = true;
   clearData();
   logs();
 });
@@ -162,6 +172,7 @@ equalsBtn.addEventListener("click", () => {
 // swap button
 swapBtn.addEventListener("click", e => {
   if (operators.length == 0) {
+    wipe = false;
     let numberToSwap = parseFloat(display.innerHTML);
     display.innerHTML = -numberToSwap;
     logs();
