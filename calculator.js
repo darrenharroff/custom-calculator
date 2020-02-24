@@ -55,6 +55,14 @@ const displayResult = () => {
 
 // back function
 const backspace = () => {
+  if (
+    display.innerHTML.slice(-1) == "+" ||
+    display.innerHTML.slice(-1) == "-" ||
+    display.innerHTML.slice(-1) == "x" ||
+    display.innerHTML.slice(-1) == "/"
+  ) {
+    clearData();
+  }
   let current = [...display.innerHTML];
   current.pop();
   display.innerHTML = current.join("");
@@ -87,22 +95,37 @@ let numbers = [];
 let operators = [];
 let wipe = false;
 
+const ops = ["+", "-", "/", "x"];
+
 // printing buttons
 printBtns.forEach(btn => {
   btn.addEventListener("click", e => {
     wipeData();
+
+    // decimal functionality
     if (e.target.classList.contains("decimal")) {
-      if (display.innerHTML.slice(-1) == ".") return;
+      if (operators.length == 0 && display.innerHTML.includes(".")) {
+        return;
+      } else if (
+        operators.length > 0 &&
+        display.innerHTML.substring(numbers[0].toString().length).includes(".")
+      ) {
+        console.log(display.innerHTML.substring(numbers[0].toString().length));
+        return;
+      }
     }
+
     display.innerHTML += e.target.innerHTML;
-    logs();
+
+    // logs();
   });
 });
 
 // operator buttons
 operatorBtns.forEach(btn => {
   btn.addEventListener("click", e => {
-    if (display.innerHTML.slice(-1) == "") return;
+    if (display.innerHTML.slice(-1) == "" || display.innerHTML.slice(-1) == ".")
+      return;
     if (
       display.innerHTML.slice(-1) == "+" ||
       display.innerHTML.slice(-1) == "-" ||
@@ -111,6 +134,8 @@ operatorBtns.forEach(btn => {
     ) {
       operators.pop();
       backspace();
+      let firstNum = parseFloat(display.innerHTML);
+      numbers.push(firstNum);
       operators.push(e.target.innerHTML);
       display.innerHTML += e.target.innerHTML;
     } else if (operators.length === 0) {
@@ -131,7 +156,7 @@ operatorBtns.forEach(btn => {
       operators.push(e.target.innerHTML);
       display.innerHTML += e.target.innerHTML;
     }
-    logs();
+    // logs();
   });
 });
 
@@ -156,7 +181,8 @@ equalsBtn.addEventListener("click", () => {
     display.innerHTML.slice(-1) == "-" ||
     display.innerHTML.slice(-1) == "x" ||
     display.innerHTML.slice(-1) == "/" ||
-    operators.length == 0
+    operators.length == 0 ||
+    display.innerHTML.slice(-1) == "."
   )
     return;
   let secNum = parseFloat(
@@ -166,7 +192,7 @@ equalsBtn.addEventListener("click", () => {
   displayResult();
   wipe = true;
   clearData();
-  logs();
+  // logs();
 });
 
 // swap button
@@ -175,7 +201,7 @@ swapBtn.addEventListener("click", e => {
     wipe = false;
     let numberToSwap = parseFloat(display.innerHTML);
     display.innerHTML = -numberToSwap;
-    logs();
+    // logs();
   }
 });
 
