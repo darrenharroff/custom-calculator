@@ -197,6 +197,7 @@ equalsBtn.addEventListener("click", () => {
 
 // swap button
 swapBtn.addEventListener("click", e => {
+  if (display.innerHTML == "" || display.innerHTML == ".") return;
   if (operators.length == 0) {
     wipe = false;
     let numberToSwap = parseFloat(display.innerHTML);
