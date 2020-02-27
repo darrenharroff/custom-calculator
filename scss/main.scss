@@ -81,7 +81,6 @@ body {
 .calculator {
   &.hidden {
     opacity: 0;
-    transform: translateY(100px);
   }
   opacity: 1;
   transform: translateY(0);
