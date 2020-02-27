@@ -21,7 +21,7 @@ modeToggle.append(modeToggleSwitch);
 calculator.append(modeToggle);
 
 const theme = document.querySelector(".main-content");
-modeToggle.addEventListener("click", () => {
+modeToggleSwitch.addEventListener("click", () => {
   if (theme.classList.contains("dark")) {
     theme.classList.remove("dark");
     theme.classList.add("light");

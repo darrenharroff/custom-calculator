@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 
 $primaryClr: rgb(47, 155, 128);
+$primaryClrSharp: rgb(0, 199, 106);
 $secClr: rgb(0, 173, 179);
+$secClrSharp: rgb(1, 179, 211);
 $backClr: rgb(41, 41, 41);
 $backClrLight: rgb(228, 228, 228);
 $darkText: rgb(126, 126, 126);
 
-$shadow1: 3px 3px 12px rgba(black, 0.15);
+$shadow1: 0 1px 6px 0 rgba(black, 0.25);
 
 * {
   margin: 0;
@@ -36,13 +38,20 @@ body {
       }
       .buttons {
         .button {
-          background-color: $backClr;
+          background-color: lighten($backClr, 0.75);
           color: white;
+          &.function {
+            color: $primaryClr;
+          }
+          &.operator,
+          &.equals {
+            color: $secClr;
+          }
         }
       }
       .modeToggle {
         &__switch {
-          background-color: $backClr;
+          background-color: lighten($backClr, 0.75);
           &__handle {
             background-color: lighten($backClr, 2);
             transform: translateX(100%);
@@ -63,6 +72,13 @@ body {
         .button {
           background-color: $backClrLight;
           color: $darkText;
+          &.function {
+            color: $primaryClrSharp;
+          }
+          &.operator,
+          &.equals {
+            color: $secClrSharp;
+          }
         }
       }
       .modeToggle {
@@ -100,7 +116,7 @@ body {
     overflow: hidden;
     flex: 1;
     &__readout {
-      font-size: 2rem;
+      font-size: 2.3rem;
       font-weight: lighter;
       width: 100%;
       height: 100%;
@@ -139,13 +155,6 @@ body {
         width: 100%;
         max-width: unset;
       }
-      &.function {
-        color: $primaryClr !important;
-      }
-      &.operator,
-      &.equals {
-        color: $secClr !important;
-      }
       &:hover {
         filter: brightness(105%);
       }
@@ -166,7 +175,6 @@ body {
     align-items: center;
     width: 100%;
     height: 15px;
-    cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     &__switch {
       height: 100%;
@@ -176,6 +184,8 @@ body {
       display: flex;
       align-items: center;
       position: relative;
+      cursor: pointer;
+
       -webkit-tap-highlight-color: transparent;
       &__handle {
         height: 25px;
