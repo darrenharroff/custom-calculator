@@ -2,6 +2,7 @@
 
 $primaryClr: rgb(47, 155, 128);
 $secClr: rgb(77, 77, 77);
+$backClr: rgb(41, 41, 41);
 
 * {
   margin: 0;
@@ -19,29 +20,38 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(41, 41, 41);
-  overflow-x: hidden;
+  background-color: $backClr;
+  overflow: hidden;
 }
 
 .calculator {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75em;
-  padding: 2.5em;
+  &.hidden {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 350ms ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
-  max-width: 390px;
-  max-height: 600px;
+  @media (min-width: 481px) {
+    max-width: 390px;
+    max-height: 650px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px 10px rgba(black, 0.2);
+  }
 
   .display {
-    grid-column: span 4;
     background-color: rgb(241, 241, 241);
-    margin-bottom: 1em;
     padding: 1em;
     width: 100%;
     height: 85px;
-    border-radius: 10px;
     overflow: hidden;
+    flex: 1;
     &__readout {
       font-size: 1.5rem;
       float: right;
@@ -54,60 +64,64 @@ body {
       letter-spacing: 3px;
     }
   }
-  .button {
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.75rem;
-    font-weight: bold;
-    padding: 0.5em;
-    width: 60px;
-    height: 60px;
-    background-color: rgb(228, 228, 228);
-    color: rgb(41, 41, 41);
-    cursor: pointer;
-    transition: all 75ms ease;
-    user-select: none;
-    &:hover {
-      filter: brightness(95%);
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    flex: 5;
+
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.75rem;
+      font-weight: bold;
+      padding: 0.5em;
+      width: 100%;
+      height: 100%;
+      background-color: $backClr;
+      color: white;
+      cursor: pointer;
+      transition: all 75ms ease;
+      user-select: none;
+      &:hover {
+        filter: brightness(95%);
+      }
+      &:active {
+        transform: scale(0.97);
+        filter: brightness(90%);
+      }
+      &:focus,
+      &:active {
+        -webkit-tap-highlight-color: transparent;
+      }
     }
-    &:active {
-      transform: scale(0.97);
-      filter: brightness(90%);
+    .operator,
+    .function {
+      background-color: $primaryClr;
+      color: white;
     }
-    &:focus,
-    &:active {
-      -webkit-tap-highlight-color: transparent;
-    }
-  }
-  .operator,
-  .function {
-    background-color: $primaryClr;
-    color: white;
-  }
-  .clear_back {
-    grid-column: span 2;
-    display: flex;
-    width: 100%;
     .clear,
     .backspace {
       width: 100%;
     }
     .clear {
-      border-radius: 50px 0 0 50px;
-      background-color: darken($primaryClr, 10%);
+      background-color: lighten($backClr, 2);
       transform-origin: right;
     }
     .backspace {
-      border-radius: 0 50px 50px 0;
+      background-color: lighten($backClr, 2);
       transform-origin: left;
     }
-  }
-  .equals {
-    background-color: $secClr;
-    color: white;
-    grid-column: span 2;
-    width: 100%;
+    .swap {
+      background-color: lighten($backClr, 2);
+    }
+    .zero {
+      grid-column: span 2;
+    }
+    .equals {
+      background-color: $primaryClr;
+      color: white;
+      width: 100%;
+    }
   }
 }

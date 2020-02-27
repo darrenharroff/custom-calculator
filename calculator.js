@@ -1,3 +1,4 @@
+const calculator = document.querySelector(".calculator");
 const display = document.querySelector(".display__readout");
 const allButtons = document.querySelectorAll(".button");
 const printBtns = document.querySelectorAll(".print");
@@ -54,6 +55,9 @@ const displayResult = () => {
   // if divided by 0
   if (result == "Infinity" || result == "-Infinity" || result == "NaN") {
     display.innerHTML = "Don't do that...";
+    setTimeout(() => {
+      backspace();
+    }, 0);
     setTimeout(() => {
       display.innerHTML = "";
     }, 1000);
@@ -236,3 +240,9 @@ document.addEventListener("keydown", e => {
     backBtn.click();
   }
 });
+
+window.onload = () => {
+  setTimeout(() => {
+    calculator.classList.remove("hidden");
+  }, 700);
+};
