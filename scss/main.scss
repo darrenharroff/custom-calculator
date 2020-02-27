@@ -147,7 +147,7 @@ body {
       border-radius: 50px;
       box-shadow: $shadow1;
       cursor: pointer;
-      transition: filter 75ms ease, transform 75ms ease,
+      transition: filter 100ms ease, transform 100ms ease,
         background-color 350ms ease, color 350ms ease;
       user-select: none;
       &.zero {
@@ -161,6 +161,7 @@ body {
       &:active {
         transform: scale(0.97);
         filter: brightness(100%);
+        box-shadow: inset $shadow1;
       }
       &:focus,
       &:active {
