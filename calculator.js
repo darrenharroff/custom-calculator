@@ -5,44 +5,53 @@ const operatorBtns = document.querySelectorAll(".operator");
 const backBtn = document.querySelector(".backspace");
 const clearBtn = document.querySelector(".clear");
 const swapBtn = document.querySelector(".swap");
-const divideBtn = document.querySelector(".divide");
 const multiplyBtn = document.querySelector(".multiply");
-const subtractBtn = document.querySelector(".subtract");
-const addBtn = document.querySelector(".add");
 const equalsBtn = document.querySelector(".equals");
 
-// operator functions
-const add = (a, b) => {
-  return a + b;
-};
-const subtract = (a, b) => {
-  return a - b;
-};
-const multiply = (a, b) => {
-  return a * b;
-};
-const divide = (a, b) => {
-  return a / b;
+// debug mode
+let debug = false;
+const logs = () => {
+  if (debug) {
+    console.log(numbers);
+    console.log(operators);
+    console.log(display.innerHTML);
+    console.log(wipe);
+  }
 };
 
-const logs = () => {
-  console.log(numbers);
-  console.log(operators);
-  console.log(display.innerHTML);
-  console.log(wipe);
+// operator functions
+const operations = {
+  "+": {
+    operation: function(a, b) {
+      return a + b;
+    }
+  },
+  "-": {
+    operation: function(a, b) {
+      return a - b;
+    }
+  },
+  x: {
+    operation: function(a, b) {
+      return a * b;
+    }
+  },
+  "/": {
+    operation: function(a, b) {
+      return a / b;
+    }
+  }
 };
 
 // operate function
 const operate = (operator, a, b) => {
-  if (operator === "+") return add(a, b);
-  if (operator === "-") return subtract(a, b);
-  if (operator === "x") return multiply(a, b);
-  if (operator === "/") return divide(a, b);
+  return operations[operator].operation(a, b);
 };
 
 // display result
 const displayResult = () => {
   result = roundResult();
+  // if divided by 0
   if (result == "Infinity" || result == "-Infinity" || result == "NaN") {
     display.innerHTML = "Don't do that...";
     setTimeout(() => {
@@ -55,14 +64,10 @@ const displayResult = () => {
 
 // back function
 const backspace = () => {
-  if (
-    display.innerHTML.slice(-1) == "+" ||
-    display.innerHTML.slice(-1) == "-" ||
-    display.innerHTML.slice(-1) == "x" ||
-    display.innerHTML.slice(-1) == "/"
-  ) {
+  if (lastIsOperator()) {
     clearData();
   }
+  wipe = false;
   let current = [...display.innerHTML];
   current.pop();
   display.innerHTML = current.join("");
@@ -82,6 +87,28 @@ const wipeData = () => {
     clearData();
     wipe = false;
   }
+};
+
+// checks if last is operator
+const lastIsOperator = () => {
+  if (
+    display.innerHTML.slice(-1) == "+" ||
+    display.innerHTML.slice(-1) == "-" ||
+    display.innerHTML.slice(-1) == "x" ||
+    display.innerHTML.slice(-1) == "/"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// push first number
+const pushFirstNum = e => {
+  let firstNum = parseFloat(display.innerHTML);
+  numbers.push(firstNum);
+  operators.push(e.target.innerHTML);
+  display.innerHTML += e.target.innerHTML;
 };
 
 // round number
@@ -117,7 +144,7 @@ printBtns.forEach(btn => {
 
     display.innerHTML += e.target.innerHTML;
 
-    // logs();
+    logs();
   });
 });
 
@@ -126,37 +153,25 @@ operatorBtns.forEach(btn => {
   btn.addEventListener("click", e => {
     if (display.innerHTML.slice(-1) == "" || display.innerHTML.slice(-1) == ".")
       return;
-    if (
-      display.innerHTML.slice(-1) == "+" ||
-      display.innerHTML.slice(-1) == "-" ||
-      display.innerHTML.slice(-1) == "x" ||
-      display.innerHTML.slice(-1) == "/"
-    ) {
+    if (lastIsOperator()) {
       operators.pop();
       backspace();
-      let firstNum = parseFloat(display.innerHTML);
-      numbers.push(firstNum);
-      operators.push(e.target.innerHTML);
-      display.innerHTML += e.target.innerHTML;
+      pushFirstNum(e);
+      //
     } else if (operators.length === 0) {
       wipe = false;
-      operators.push(e.target.innerHTML);
-      let firstNum = parseFloat(display.innerHTML);
-      numbers.push(firstNum);
-      display.innerHTML += e.target.innerHTML;
+      pushFirstNum(e);
+      //
     } else {
       let secNum = parseFloat(
         display.innerHTML.slice(display.innerHTML.lastIndexOf(operators[0]) + 1)
       );
       numbers.push(secNum);
       displayResult();
-      let firstNum = parseFloat(display.innerHTML);
       clearData();
-      numbers.push(firstNum);
-      operators.push(e.target.innerHTML);
-      display.innerHTML += e.target.innerHTML;
+      pushFirstNum(e);
     }
-    // logs();
+    logs();
   });
 });
 
@@ -164,23 +179,20 @@ operatorBtns.forEach(btn => {
 clearBtn.addEventListener("click", () => {
   clearDisplay();
   clearData();
-  // logs();
+  logs();
 });
 
 // backspace button
 backBtn.addEventListener("click", () => {
   backspace();
-  // logs();
+  logs();
 });
 
 // equals button
 equalsBtn.addEventListener("click", () => {
   if (
     display.innerHTML === "" ||
-    display.innerHTML.slice(-1) == "+" ||
-    display.innerHTML.slice(-1) == "-" ||
-    display.innerHTML.slice(-1) == "x" ||
-    display.innerHTML.slice(-1) == "/" ||
+    lastIsOperator() ||
     operators.length == 0 ||
     display.innerHTML.slice(-1) == "."
   )
@@ -192,7 +204,7 @@ equalsBtn.addEventListener("click", () => {
   displayResult();
   wipe = true;
   clearData();
-  // logs();
+  logs();
 });
 
 // swap button
@@ -202,13 +214,12 @@ swapBtn.addEventListener("click", e => {
     wipe = false;
     let numberToSwap = parseFloat(display.innerHTML);
     display.innerHTML = -numberToSwap;
-    // logs();
+    logs();
   }
 });
 
 // keystroke bindings
 document.addEventListener("keydown", e => {
-  // console.log(e.key);
   allButtons.forEach(btn => {
     if (e.key == btn.innerHTML) {
       if (e.key == "x" || e.key == "=") return;
