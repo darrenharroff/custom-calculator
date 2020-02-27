@@ -9,6 +9,28 @@ const swapBtn = document.querySelector(".swap");
 const multiplyBtn = document.querySelector(".multiply");
 const equalsBtn = document.querySelector(".equals");
 
+// light/dark toggle
+let modeToggle = document.createElement("div");
+modeToggle.className = "modeToggle";
+let modeToggleSwitch = document.createElement("div");
+modeToggleSwitch.className = "modeToggle__switch";
+let modeToggleHandle = document.createElement("div");
+modeToggleHandle.className = "modeToggle__switch__handle";
+modeToggleSwitch.append(modeToggleHandle);
+modeToggle.append(modeToggleSwitch);
+calculator.append(modeToggle);
+
+const theme = document.querySelector(".main-content");
+modeToggle.addEventListener("click", () => {
+  if (theme.classList.contains("dark")) {
+    theme.classList.remove("dark");
+    theme.classList.add("light");
+  } else {
+    theme.classList.remove("light");
+    theme.classList.add("dark");
+  }
+});
+
 // debug mode
 let debug = false;
 const logs = () => {
