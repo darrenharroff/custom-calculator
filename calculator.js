@@ -75,7 +75,7 @@ const operate = (operator, a, b) => {
 const displayResult = () => {
   result = roundResult();
   // if divided by 0
-  if (result == "Infinity" || result == "-Infinity" || result == "NaN") {
+  if (operators[0] === "/" && numbers[1] === 0) {
     display.innerHTML = "Don't do that...";
     setTimeout(() => {
       backspace();
