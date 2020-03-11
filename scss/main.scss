@@ -51,7 +51,7 @@ body {
       }
       .modeToggle {
         &__switch {
-          background-color: lighten($backClr, 0.75);
+          background-color: $secClr;
           &__handle {
             background-color: lighten($backClr, 2);
             transform: translateX(100%);
@@ -83,7 +83,7 @@ body {
       }
       .modeToggle {
         &__switch {
-          background-color: $backClrLight;
+          background-color: $primaryClr;
           &__handle {
             background-color: darken($backClrLight, 2);
             transform: translateX(0);
@@ -170,15 +170,15 @@ body {
     }
   }
   .modeToggle {
-    margin: 3rem 0 1rem;
+    margin: 1em 0;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 15px;
+    height: 20%;
     -webkit-tap-highlight-color: transparent;
     &__switch {
-      height: 100%;
+      height: 25px;
       width: 50px;
       border-radius: 50px;
       box-shadow: $shadow1;
@@ -189,10 +189,9 @@ body {
 
       -webkit-tap-highlight-color: transparent;
       &__handle {
-        height: 25px;
-        width: 25px;
+        height: 27px;
+        width: 27px;
         border-radius: 50px;
-        box-shadow: $shadow1;
         position: absolute;
         -webkit-tap-highlight-color: transparent;
       }
